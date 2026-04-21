@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Repeat Speaking Topic</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    color: #333;
+    padding: 25px;
+    margin: 20px auto;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#topic {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #6a11cb;
+}
+
+button {
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+#timer {
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚫 No Repeat Speaking Topic</h1>
+
+<button onclick="pickTopic()">🎯 Next Topic</button>
+<button onclick="resetTopics()">🔄 Reset</button>
+<button onclick="startTimer()">⏱ Start 3-min Timer</button>
+
+<div class="card">
+    <div id="topic">Click to start</div>
+    <div id="questions"></div>
+    <div id="timer"></div>
+</div>
+
+</div>
+
+<script>
+
+// --- TOPICS ---
+const originalTopics = [
+"Someone keeps looking at their phone during a conversation with you.",
+"You arrive at a party and realise someone else is wearing the same clothes as you.",
+"A restaurant plays very loud music – you have to shout to be heard.",
+"Your drink bottle leaks and everything in your bag gets wet.",
+"Someone keeps spelling your name wrong.",
+"You forget to buy the one thing you really needed.",
+"Someone leaves dirty clothes on the bathroom floor.",
+"You try to read an article online, but it is only for paying users.",
+"A colleague taps their fingers during meetings.",
+"You are woken up by an alarm on the weekend."
+];
+
+let remainingTopics = [...originalTopics];
+
+// --- QUESTIONS (FIXED ORDER) ---
+const questions = [
+"💬 Why is this situation annoying?",
+"🙋 Has this ever happened to you?",
+"🤔 What would you do?",
+"✅ How can people avoid this?",
+"⚖️ Is this a big or small problem?",
+"👤 Who is responsible?",
+"🎯 What is the best reaction?",
+"🌍 Does this happen in your country?"
+];
+
+// --- PICK TOPIC (NO REPEAT) ---
+function pickTopic() {
+    const topicEl = document.getElementById("topic");
+
+    if (remainingTopics.length === 0) {
+        topicEl.innerHTML = "✅ All topics have been used!";
+        document.getElementById("questions").innerHTML = "";
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * remainingTopics.length);
+    const selected = remainingTopics.splice(randomIndex, 1)[0];
+
+    topicEl.innerHTML = "👉 " + selected;
+
+    showQuestions();
+}
+
+// --- SHOW QUESTIONS (NO SHUFFLE) ---
+function showQuestions() {
+    let qList = "<h3>Discussion Questions:</h3><ul>";
+    questions.forEach(q => {
+        qList += "<li>" + q + "</li>";
+    });
+    qList += "</ul>";
+
+    document.getElementById("questions").innerHTML = qList;
+}
+
+// --- RESET ---
+function resetTopics() {
+    remainingTopics = [...originalTopics];
+    document.getElementById("topic").innerHTML = "🔄 Topics reset!";
+    document.getElementById("questions").innerHTML = "";
+}
+
+// --- TIMER (3 MIN) ---
+let countdown;
+
+function startTimer() {
+    let time = 180;
+    const timerEl = document.getElementById("timer");
+
+    clearInterval(countdown);
+
+    countdown = setInterval(() => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timerEl.innerHTML = "⏳ Time left: " + minutes + ":" + seconds;
+
+        time--;
+
+        if (time < 0) {
+            clearInterval(countdown);
+            timerEl.innerHTML = "⏰ Time's up!";
+            playBeep();
+        }
+    }, 1000);
+}
+
+function playBeep() {
+    const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+    audio.play();
+}
+
+</script>
+
+</body>
+</html>
