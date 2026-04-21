@@ -93,7 +93,7 @@ li {
 <h1>🎯 Random Speaking Topic</h1>
 
 <button onclick="pickTopic()">🎲 Pick Topic</button>
-<button onclick="startTimer()">⏱ Start 3 min Timer</button>
+<button onclick="startTimer()">⏱ Start 5 min Timer</button>
 
 <div class="card">
     <div id="topic">Click the button to start</div>
@@ -130,15 +130,27 @@ const questions = [
 ];
 
 function pickTopic() {
-    const randomTopic = topics[Math.floor(Math.random() * topics.length)];
-
     const topicEl = document.getElementById("topic");
+
+    if (remainingTopics.length === 0) {
+        topicEl.innerHTML = "✅ All topics used!";
+        document.getElementById("questions").innerHTML = "";
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * remainingTopics.length);
+    const selected = remainingTopics.splice(randomIndex, 1)[0];
+
+    // ✅ KEEP YOUR ORIGINAL ANIMATION
     topicEl.style.opacity = 0;
 
     setTimeout(() => {
-        topicEl.innerHTML = "👉 " + randomTopic;
+        topicEl.innerHTML = "👉 " + selected;
         topicEl.style.opacity = 1;
     }, 200);
+
+    showQuestions(); // keep your existing question function
+}
 
     // shuffle questions
     const shuffled = [...questions].sort(() => 0.5 - Math.random());
@@ -155,7 +167,7 @@ function pickTopic() {
 let countdown;
 
 function startTimer() {
-    let time = 180;
+    let time = 300;
     const timerEl = document.getElementById("timer");
 
     clearInterval(countdown);
