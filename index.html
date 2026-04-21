@@ -93,7 +93,8 @@ li {
 <h1>🎯 Random Speaking Topic</h1>
 
 <button onclick="pickTopic()">🎲 Pick Topic</button>
-<button onclick="startTimer()">⏱ Start 5 min Timer</button>
+<button onclick="resetTopics()">🔄 Reset Topics</button>
+<button onclick="startTimer()">⏱ Start 5-min Timer</button>
 
 <div class="card">
     <div id="topic">Click the button to start</div>
@@ -105,7 +106,8 @@ li {
 
 <script>
 
-const topics = [
+// --- TOPICS (NO REPEAT) ---
+const originalTopics = [
 "Someone keeps looking at their phone during a conversation with you.",
 "You arrive at a party and realise someone else is wearing the same clothes as you.",
 "A restaurant plays very loud music – you have to shout to be heard.",
@@ -118,6 +120,9 @@ const topics = [
 "You are woken up by an alarm on the weekend."
 ];
 
+let remainingTopics = [...originalTopics];
+
+// --- QUESTIONS ---
 const questions = [
 "💬 Why is this situation annoying?",
 "🙋 Has this ever happened to you?",
@@ -129,6 +134,7 @@ const questions = [
 "🌍 Does this happen in your country?"
 ];
 
+// --- PICK TOPIC (WITH ANIMATION, NO REPEAT) ---
 function pickTopic() {
     const topicEl = document.getElementById("topic");
 
@@ -141,7 +147,7 @@ function pickTopic() {
     const randomIndex = Math.floor(Math.random() * remainingTopics.length);
     const selected = remainingTopics.splice(randomIndex, 1)[0];
 
-    // ✅ KEEP YOUR ORIGINAL ANIMATION
+    // animation kept
     topicEl.style.opacity = 0;
 
     setTimeout(() => {
@@ -149,14 +155,13 @@ function pickTopic() {
         topicEl.style.opacity = 1;
     }, 200);
 
-    showQuestions(); // keep your existing question function
+    showQuestions();
 }
 
-    // shuffle questions
-    const shuffled = [...questions].sort(() => 0.5 - Math.random());
-
+// --- SHOW QUESTIONS ---
+function showQuestions() {
     let qList = "<h3>Discussion Questions:</h3><ul>";
-    shuffled.forEach(q => {
+    questions.forEach(q => {
         qList += "<li>" + q + "</li>";
     });
     qList += "</ul>";
@@ -164,6 +169,15 @@ function pickTopic() {
     document.getElementById("questions").innerHTML = qList;
 }
 
+// --- RESET ---
+function resetTopics() {
+    remainingTopics = [...originalTopics];
+
+    document.getElementById("topic").innerHTML = "🔄 Topics reset!";
+    document.getElementById("questions").innerHTML = "";
+}
+
+// --- TIMER (5 MINUTES) ---
 let countdown;
 
 function startTimer() {
