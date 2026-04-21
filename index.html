@@ -2,55 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Random Discussion Topic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Speaking Topic</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #f4f6f8;
-        padding: 40px;
-    }
-    h1 {
-        color: #333;
-    }
-    #topic {
-        font-size: 22px;
-        margin: 20px 0;
-        font-weight: bold;
-        color: #2c3e50;
-    }
-    #questions {
-        margin-top: 20px;
-        text-align: left;
-        display: inline-block;
-        max-width: 600px;
-    }
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-        background: #3498db;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #2980b9;
-    }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+    padding: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    color: #333;
+    padding: 25px;
+    margin: 20px auto;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.4s ease;
+}
+
+#topic {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #6a11cb;
+    transition: opacity 0.3s ease;
+}
+
+button {
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+#timer {
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
+
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>🎯 Random Speaking Topic</h1>
 
-<button onclick="pickTopic()">Pick a Topic</button>
+<button onclick="pickTopic()">🎲 Pick Topic</button>
+<button onclick="startTimer()">⏱ Start 60s Timer</button>
 
-<div id="topic"></div>
+<div class="card">
+    <div id="topic">Click the button to start</div>
+    <div id="questions"></div>
+    <div id="timer"></div>
+</div>
 
-<div id="questions"></div>
+</div>
 
 <script>
+
 const topics = [
 "Someone keeps looking at their phone during a conversation with you.",
 "You arrive at a party and realise someone else is wearing the same clothes as you.",
@@ -65,29 +119,64 @@ const topics = [
 ];
 
 const questions = [
-"Why is this situation annoying?",
-"Has this ever happened to you?",
-"What did you do (or what would you do)?",
-"How can people avoid this situation?",
-"Is this a big problem or a small problem? Why?",
-"Who is usually responsible in this situation?",
-"What would be the best reaction?",
-"Does this happen often in your country?"
+"💬 Why is this situation annoying?",
+"🙋 Has this ever happened to you?",
+"🤔 What would you do?",
+"✅ How can people avoid this?",
+"⚖️ Is this a big or small problem?",
+"👤 Who is responsible?",
+"🎯 What is the best reaction?",
+"🌍 Does this happen in your country?"
 ];
 
 function pickTopic() {
     const randomTopic = topics[Math.floor(Math.random() * topics.length)];
 
-    document.getElementById("topic").innerHTML = "👉 " + randomTopic;
+    const topicEl = document.getElementById("topic");
+    topicEl.style.opacity = 0;
+
+    setTimeout(() => {
+        topicEl.innerHTML = "👉 " + randomTopic;
+        topicEl.style.opacity = 1;
+    }, 200);
+
+    // shuffle questions
+    const shuffled = [...questions].sort(() => 0.5 - Math.random());
 
     let qList = "<h3>Discussion Questions:</h3><ul>";
-    questions.forEach(q => {
+    shuffled.forEach(q => {
         qList += "<li>" + q + "</li>";
     });
     qList += "</ul>";
 
     document.getElementById("questions").innerHTML = qList;
 }
+
+let countdown;
+
+function startTimer() {
+    let time = 60;
+    const timerEl = document.getElementById("timer");
+
+    clearInterval(countdown);
+
+    countdown = setInterval(() => {
+        timerEl.innerHTML = "⏳ Time left: " + time + "s";
+        time--;
+
+        if (time < 0) {
+            clearInterval(countdown);
+            timerEl.innerHTML = "⏰ Time's up!";
+            playBeep();
+        }
+    }, 1000);
+}
+
+function playBeep() {
+    const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+    audio.play();
+}
+
 </script>
 
 </body>
