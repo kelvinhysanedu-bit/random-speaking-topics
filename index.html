@@ -155,13 +155,18 @@ function pickTopic() {
 let countdown;
 
 function startTimer() {
-    let time = 60;
+    let time = 180;
     const timerEl = document.getElementById("timer");
 
     clearInterval(countdown);
 
     countdown = setInterval(() => {
-        timerEl.innerHTML = "⏳ Time left: " + time + "s";
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timerEl.innerHTML = "⏳ Time left: " + minutes + ":" + seconds;
+
         time--;
 
         if (time < 0) {
