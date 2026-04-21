@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Random Discussion Topic</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f4f6f8;
+        padding: 40px;
+    }
+    h1 {
+        color: #333;
+    }
+    #topic {
+        font-size: 22px;
+        margin: 20px 0;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    #questions {
+        margin-top: 20px;
+        text-align: left;
+        display: inline-block;
+        max-width: 600px;
+    }
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #2980b9;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🎯 Random Speaking Topic</h1>
+
+<button onclick="pickTopic()">Pick a Topic</button>
+
+<div id="topic"></div>
+
+<div id="questions"></div>
+
+<script>
+const topics = [
+"Someone keeps looking at their phone during a conversation with you.",
+"You arrive at a party and realise someone else is wearing the same clothes as you.",
+"A restaurant plays very loud music – you have to shout to be heard.",
+"Your drink bottle leaks and everything in your bag gets wet.",
+"Someone keeps spelling your name wrong.",
+"You forget to buy the one thing you really needed.",
+"Someone leaves dirty clothes on the bathroom floor.",
+"You try to read an article online, but it is only for paying users.",
+"A colleague taps their fingers during meetings.",
+"You are woken up by an alarm on the weekend."
+];
+
+const questions = [
+"Why is this situation annoying?",
+"Has this ever happened to you?",
+"What did you do (or what would you do)?",
+"How can people avoid this situation?",
+"Is this a big problem or a small problem? Why?",
+"Who is usually responsible in this situation?",
+"What would be the best reaction?",
+"Does this happen often in your country?"
+];
+
+function pickTopic() {
+    const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+
+    document.getElementById("topic").innerHTML = "👉 " + randomTopic;
+
+    let qList = "<h3>Discussion Questions:</h3><ul>";
+    questions.forEach(q => {
+        qList += "<li>" + q + "</li>";
+    });
+    qList += "</ul>";
+
+    document.getElementById("questions").innerHTML = qList;
+}
+</script>
+
+</body>
+</html>
